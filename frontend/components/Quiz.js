@@ -1,5 +1,7 @@
 import React from 'react'
-
+import reducer from '../state/reducer'
+import { useReducer } from 'react';
+import { SET_SELECTED_ANSWER } from '../state/action-types';
 export default function Quiz(props) {
   return (
     <div id="wrapper">
@@ -13,14 +15,14 @@ export default function Quiz(props) {
               <div className="answer selected">
                 A function
                 <button>
-                  SELECTED
+                  {'' === true ? 'Selected' : 'Select'}
                 </button>
               </div>
 
               <div className="answer">
                 An elephant
                 <button>
-                  Select
+                  {'' === true ? 'Selected' : 'Select'}
                 </button>
               </div>
             </div>

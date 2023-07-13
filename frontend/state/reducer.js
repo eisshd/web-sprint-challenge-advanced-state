@@ -15,7 +15,7 @@ export const initialWheelState = 0
 function wheel(state = initialWheelState, action) {
   switch(action.type){
     case(MOVE_CLOCKWISE):
-    return state + 1
+    return state === 5 ? state - 5 : state + 1
     case(MOVE_COUNTERCLOCKWISE):
     return state === 0 ? state + 5 : state - 1
   }
