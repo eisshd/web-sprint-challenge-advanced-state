@@ -7,12 +7,10 @@ export default function Wheel(props) {
   const [state, dispatch] = useReducer(reducer, {wheel: initialWheelState})
   
   const handleCtrClockwise = () => {
-    console.log(state.wheel)
     return dispatch(moveCounterClockwise())
   }
 
   const handleClockwise = () => {
-    console.log(state.wheel)
     return dispatch(moveClockwise())
   }
 

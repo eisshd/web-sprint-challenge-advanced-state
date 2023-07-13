@@ -18,8 +18,7 @@ function wheel(state = initialWheelState, action) {
     return state === 5 ? state - 5 : state + 1
     case(MOVE_COUNTERCLOCKWISE):
     return state === 0 ? state + 5 : state - 1
-  }
-  return state
+  } return state
 }
 
 export const initialQuizState = null
@@ -27,17 +26,15 @@ function quiz(state = initialQuizState, action) {
   switch(action.type){
     case(SET_QUIZ_INTO_STATE):
     return ''
-  }
-  return state
+  } return state
 }
 
 export const initialSelectedAnswerState = null
 function selectedAnswer(state = initialSelectedAnswerState, action) {
   switch(action.type){
     case(SET_SELECTED_ANSWER):
-    return ''
-  }
-  return state
+    return state === null ? true : null
+  } return state
 }
 
 export const initialMessageState = ''
@@ -45,8 +42,7 @@ function infoMessage(state = initialMessageState, action) {
   switch(action.type){
     case(SET_INFO_MESSAGE):
     return ''
-  }
-  return state
+  } return state
 }
 
 export const initialFormState = {
