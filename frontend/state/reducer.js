@@ -21,11 +21,11 @@ function wheel(state = initialWheelState, action) {
   } return state
 }
 
-export const initialQuizState = null
+export const initialQuizState = true
 function quiz(state = initialQuizState, action) {
   switch(action.type){
     case(SET_QUIZ_INTO_STATE):
-    return ''
+    return state = action.payload
   } return state
 }
 
@@ -51,6 +51,10 @@ export const initialFormState = {
   newFalseAnswer: '',
 }
 function form(state = initialFormState, action) {
+  switch(action.type){
+    case(INPUT_CHANGE):
+    return ({...state, state: action.payload})
+  }
   return state
 }
 

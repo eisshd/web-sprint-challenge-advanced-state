@@ -25,8 +25,8 @@ export function setMessage() {
   return({type: SET_INFO_MESSAGE})
  }
 
-export function setQuiz() {
-  return({type: SET_QUIZ_INTO_STATE})
+export function setQuiz(action) {
+  return({type: SET_QUIZ_INTO_STATE, payload: action})
  }
 
 export function inputChange() {
