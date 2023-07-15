@@ -8,13 +8,16 @@ export default function Quiz(props) {
   const [selectTwo, setSelectTwo] = useState(false)
 
   const handleSelectedAnswerOne = () => {
-    selectOne === false ? setSelectOne(true) && setSelectTwo(false) : setSelectOne(false)
-    return dispatch(selectAnswer())
-  }
+     return dispatch(selectAnswer()), setSelectOne(true), setSelectTwo(false)
+} 
 
   const handleSelectedAnswerTwo = () => {
-    selectTwo === false ? setSelectTwo(true) && setSelectOne(false) : setSelectTwo(false)
-    return dispatch(selectAnswer())
+    return dispatch(selectAnswer()), setSelectTwo(true), setSelectOne(false)
+  }
+
+  const handleSubmit = () => {
+    // selectOne === true && selected answser === initialFormState.newTrueAnswer show Message Component
+    // then load the 
   }
 
   return (
@@ -26,17 +29,17 @@ export default function Quiz(props) {
             <h2>What is a closure?</h2>
 
             <div id="quizAnswers">
-              <div className={state.selectedAnswer === true ? "answer selected" : "answer"}>
+              <div className={selectOne === true && selectTwo === false ? "answer selected" : "answer"}>
                 A function
                 <button onClick={handleSelectedAnswerOne}>
-                  {state.selectedAnswer === true && selectOne === true ? 'Selected' : 'Select'}
+                  {state.selectedAnswer === true && selectOne === true && selectTwo === false ? 'Selected' : 'Select'}
                 </button>
               </div>
 
-              <div className={state.selectedAnswer === true ? "answer selected" : "answer"}>
+              <div className={selectTwo === true && selectOne === false ? "answer selected" : "answer"}>
                 An elephant
                 <button onClick={handleSelectedAnswerTwo}>
-                  {state.selectedAnswer === true && selectTwo === true ? 'Selected' : 'Select'}
+                  {state.selectedAnswer === true && selectTwo === true && selectOne === false ? 'Selected' : 'Select'}
                 </button>
               </div>
             </div>

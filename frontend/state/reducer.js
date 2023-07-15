@@ -33,7 +33,7 @@ export const initialSelectedAnswerState = null
 function selectedAnswer(state = initialSelectedAnswerState, action) {
   switch(action.type){
     case(SET_SELECTED_ANSWER):
-    return state === null ? true : null
+    return state = true
   } return state
 }
 
