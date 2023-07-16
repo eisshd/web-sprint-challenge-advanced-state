@@ -21,8 +21,8 @@ export function selectAnswer() {
   return({type: SET_SELECTED_ANSWER})
  }
 
-export function setMessage() {
-  return({type: SET_INFO_MESSAGE})
+export function setMessage(action) {
+  return({type: SET_INFO_MESSAGE, payload: action})
  }
 
 export function setQuiz(action) {

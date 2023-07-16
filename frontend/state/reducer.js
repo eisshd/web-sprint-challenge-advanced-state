@@ -15,9 +15,9 @@ export const initialWheelState = 0
 function wheel(state = initialWheelState, action) {
   switch(action.type){
     case(MOVE_CLOCKWISE):
-    return state === 5 ? state - 5 : state + 1
+    return (state === 5 ? state - 5 : state + 1)
     case(MOVE_COUNTERCLOCKWISE):
-    return state === 0 ? state + 5 : state - 1
+    return (state === 0 ? state + 5 : state - 1)
   } return state
 }
 
@@ -41,7 +41,7 @@ export const initialMessageState = ''
 function infoMessage(state = initialMessageState, action) {
   switch(action.type){
     case(SET_INFO_MESSAGE):
-    return ''
+    return state = action.payload
   } return state
 }
 
