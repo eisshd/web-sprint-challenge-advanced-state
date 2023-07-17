@@ -29,8 +29,8 @@ export function setQuiz(action) {
   return({type: SET_QUIZ_INTO_STATE, payload: action})
  }
 
-export function inputChange() {
-  return({type: INPUT_CHANGE})
+export function inputChange(action) {
+  return({type: INPUT_CHANGE, payload: action})
  }
 
 export function resetForm() {
@@ -43,6 +43,7 @@ export function fetchQuiz() {
     // First, dispatch an action to reset the quiz state (so the "Loading next quiz..." message can display)
     // On successful GET:
     // - Dispatch an action to send the obtained quiz to its state
+
   }
 }
 export function postAnswer() {

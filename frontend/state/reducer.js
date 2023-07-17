@@ -53,7 +53,7 @@ export const initialFormState = {
 function form(state = initialFormState, action) {
   switch(action.type){
     case(INPUT_CHANGE):
-    return ({...state, state: action.payload})
+    return ({...state, newQuestion: action.payload})
   }
   return state
 }
