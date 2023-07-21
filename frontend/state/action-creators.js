@@ -8,6 +8,7 @@ import {
   INPUT_CHANGE,
   RESET_FORM
 } from './action-types'
+import axios from 'axios';
 
 export function moveClockwise() {
   return({type: MOVE_CLOCKWISE})
@@ -17,16 +18,16 @@ export function moveCounterClockwise() {
   return({type: MOVE_COUNTERCLOCKWISE})
  }
 
-export function selectAnswer() {
-  return({type: SET_SELECTED_ANSWER})
+export function selectAnswer(answer) {
+  return({type: SET_SELECTED_ANSWER, payload: answer})
  }
 
 export function setMessage(action) {
   return({type: SET_INFO_MESSAGE, payload: action})
  }
 
-export function setQuiz(action) {
-  return({type: SET_QUIZ_INTO_STATE, payload: action})
+export function setQuiz(quiz) {
+  return({type: SET_QUIZ_INTO_STATE, payload: quiz})
  }
 
 export function inputChange(action) {
@@ -39,19 +40,35 @@ export function resetForm() {
 
 // ❗ Async action creators
 export function fetchQuiz() {
+  
   return function (dispatch) {
     // First, dispatch an action to reset the quiz state (so the "Loading next quiz..." message can display)
+    dispatch(setQuiz(null))
+    axios.get('http://localhost:9000/api/quiz/next')
+        .then(res => {
+              dispatch(setQuiz(res.data))
+        })
+        .catch(err => {console.log(err)})
     // On successful GET:
     // - Dispatch an action to send the obtained quiz to its state
 
   }
 }
-export function postAnswer() {
+export function postAnswer(quiz_id, answer_id) {
   return function (dispatch) {
     // On successful POST:
-    // - Dispatch an action to reset the selected answer state
-    // - Dispatch an action to set the server message to state
-    // - Dispatch the fetching of the next quiz
+    axios.post('http://localhost:9000/api/quiz/answer', {quiz_id: quiz_id, answer_id: answer_id})
+        .then(res => {
+          // - Dispatch an action to reset the selected answer state
+          dispatch(selectAnswer(null))
+          console.log('postAnswer', res.data.message)
+          // - Dispatch an action to set the server message to state
+          
+          // - Dispatch the fetching of the next quiz
+        })  
+    
+
+
   }
 }
 export function postQuiz() {

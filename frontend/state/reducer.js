@@ -21,20 +21,22 @@ function wheel(state = initialWheelState, action) {
   } return state
 }
 
-export const initialQuizState = true
+export const initialQuizState = null
 function quiz(state = initialQuizState, action) {
   switch(action.type){
     case(SET_QUIZ_INTO_STATE):
-    return state = action.payload
-  } return state
+    return action.payload
+    default: return state
+  } 
 }
 
 export const initialSelectedAnswerState = null
 function selectedAnswer(state = initialSelectedAnswerState, action) {
   switch(action.type){
     case(SET_SELECTED_ANSWER):
-    return state = true
-  } return state
+    return action.payload
+    default: return state
+  } 
 }
 
 export const initialMessageState = ''

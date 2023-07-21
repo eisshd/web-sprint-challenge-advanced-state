@@ -1,76 +1,55 @@
 import React from 'react'
 import reducer, {initialSelectedAnswerState, initialQuizState, initialMessageState} from '../state/reducer'
 import { useReducer, useState, useEffect } from 'react';
-import {selectAnswer, setQuiz, setMessage} from '../state/action-creators'
+import {selectAnswer, setQuiz, setMessage, fetchQuiz, postAnswer} from '../state/action-creators'
 import axios from 'axios';
+import { connect } from 'react-redux';
 
-export default function Quiz(props) {
-  const [state, dispatch] = useReducer(reducer, {selectedAnswer: initialSelectedAnswerState, quiz: initialQuizState, infoMessage: initialMessageState})
+function Quiz(props) {
+  const {fetchQuiz, quiz, selectedAnswer, selectAnswer, postAnswer} = props
+  console.log(props)
+
   const [selectOne, setSelectOne] = useState(false)
   const [selectTwo, setSelectTwo] = useState(false)
-  const [question, setQuestion] = useState('')
-  const [answerOne, setAnswerOne] = useState('')
-  const [answerTwo, setAnswerTwo] = useState('')
-  
-
-  const handleSelectedAnswerOne = () => {
-     return dispatch(selectAnswer()), setSelectOne(true), setSelectTwo(false)
-} 
-
-  const handleSelectedAnswerTwo = () => {
-    return dispatch(selectAnswer()), setSelectTwo(true), setSelectOne(false)
-  }
 
   useEffect(() => {
-    dispatch(setQuiz(false)),
-    axios.get('http://localhost:9000/api/quiz/next')
-        .then(res => {
-            setQuestion(res.data.question),
-            setAnswerOne(res.data.answers[0].text),
-            setAnswerTwo(res.data.answers[1].text)
-        })
-        .catch(err => {console.log(err)})
-        .finally(() => dispatch(setQuiz(true)))
+    if(!quiz){
+      fetchQuiz()
+    }
   }, [])
 
   const handleSubmit = () => {
-    return selectOne === true ? dispatch(setMessage('That was the correct answer')) : dispatch(setMessage('That was the incorrect answer')),
-    dispatch(setQuiz(false)),
-    axios.get('http://localhost:9000/api/quiz/next')
-        .then(res => {
-            setQuestion(res.data.question),
-            setAnswerOne(res.data.answers[0].text),
-            setAnswerTwo(res.data.answers[1].text)
-        })
-        .catch(err => {console.log(err)})
-        .finally(() => dispatch(setQuiz(true)))
+    postAnswer(quiz.quiz_id, selectedAnswer.answer_id)
   }
+
+
+
 
   return (
     <div id="wrapper">
       {
         // quiz already in state? Let's use that, otherwise render "Loading next quiz..."
-        state.quiz === true ? (
+        quiz ? (
           <>
-            <h2>{question}</h2>
+            <h2>{quiz.question}</h2>
 
             <div id="quizAnswers">
-              <div className={selectOne === true && selectTwo === false ? "answer selected" : "answer"}>
-                {answerOne}
-                <button onClick={handleSelectedAnswerOne}>
-                  {state.selectedAnswer === true && selectOne === true && selectTwo === false ? 'SELECTED' : 'Select'}
+              <div className={`answer${selectedAnswer?.answer_id === quiz.answers[0].answer_id ? ' selected' : ''}`}>
+                {quiz.answers[0].text}
+                <button onClick={() => selectAnswer(quiz.answers[0])}>
+                  {selectedAnswer?.answer_id === quiz.answers[0].answer_id ? 'SELECTED' : 'Select'}
                 </button>
               </div>
 
-              <div className={selectTwo === true && selectOne === false ? "answer selected" : "answer"}>
-              {answerTwo}
-                <button onClick={handleSelectedAnswerTwo}>
-                  {state.selectedAnswer === true && selectTwo === true && selectOne === false ? 'SELECTED' : 'Select'}
+              <div className={`answer${selectedAnswer?.answer_id === quiz.answers[1].answer_id ? ' selected' : ''}`}>
+              {quiz.answers[1].text}
+                <button onClick={() => selectAnswer(quiz.answers[1])}>
+                {selectedAnswer?.answer_id === quiz.answers[1].answer_id ? 'SELECTED' : 'Select'}
                 </button>
               </div>
             </div>
 
-            <button id="submitAnswerBtn" onClick={handleSubmit} disabled={selectOne === false && selectTwo === false ? true : false}>Submit answer</button>
+            <button id="submitAnswerBtn" onClick={handleSubmit} disabled={!selectedAnswer ? true : false}>Submit answer</button>
           </>
         ) : 'Loading next quiz...'
       }
@@ -78,4 +57,12 @@ export default function Quiz(props) {
   )
 }
 
+const mapStateToProps = (state) => {
+  console.log('MSTP',state)
+  return {
+    quiz: state.quiz,
+    selectedAnswer: state.selectedAnswer
+  }
+}
 
+export default connect(mapStateToProps, {fetchQuiz, selectAnswer, postAnswer})(Quiz)
