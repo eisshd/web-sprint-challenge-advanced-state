@@ -1,16 +1,11 @@
 import React from 'react'
-import reducer, {initialSelectedAnswerState, initialQuizState, initialMessageState} from '../state/reducer'
-import { useReducer, useState, useEffect } from 'react';
-import {selectAnswer, setQuiz, setMessage, fetchQuiz, postAnswer} from '../state/action-creators'
-import axios from 'axios';
+import {useEffect } from 'react';
+import {selectAnswer, setMessage, fetchQuiz, postAnswer} from '../state/action-creators'
 import { connect } from 'react-redux';
 
 function Quiz(props) {
   const {fetchQuiz, quiz, selectedAnswer, selectAnswer, postAnswer} = props
   console.log(props)
-
-  const [selectOne, setSelectOne] = useState(false)
-  const [selectTwo, setSelectTwo] = useState(false)
 
   useEffect(() => {
     if(!quiz){
@@ -18,7 +13,8 @@ function Quiz(props) {
     }
   }, [])
 
-  const handleSubmit = () => {
+  const handleSubmit = (evt) => {
+    evt.preventDefault()
     postAnswer(quiz.quiz_id, selectedAnswer.answer_id)
   }
 
@@ -58,11 +54,11 @@ function Quiz(props) {
 }
 
 const mapStateToProps = (state) => {
-  console.log('MSTP',state)
   return {
     quiz: state.quiz,
-    selectedAnswer: state.selectedAnswer
+    selectedAnswer: state.selectedAnswer,
+    setMessage: state.message
   }
 }
 
-export default connect(mapStateToProps, {fetchQuiz, selectAnswer, postAnswer})(Quiz)
+export default connect(mapStateToProps, {fetchQuiz, selectAnswer, postAnswer, setMessage})(Quiz)
