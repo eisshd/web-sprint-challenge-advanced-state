@@ -6,7 +6,9 @@ import {
   SET_QUIZ_INTO_STATE,
   SET_SELECTED_ANSWER,
   SET_INFO_MESSAGE,
-  INPUT_CHANGE,
+  INPUT_Q_CHANGE,
+  INPUT_T_CHANGE,
+  INPUT_F_CHANGE,
   RESET_FORM
 } from './action-types'
 
@@ -56,10 +58,14 @@ export const initialFormState = {
 }
 function form(state = initialFormState, action) {
   switch(action.type){
-    case(INPUT_CHANGE):
-    return ({...state, 
-              newQuestion: action.payload
-            })
+    case(INPUT_Q_CHANGE):
+    return ({...state, newQuestion: action.payload})
+    case(INPUT_T_CHANGE):
+    return({...state, newTrueAnswer: action.payload})
+    case(INPUT_F_CHANGE):
+    return({...state, newFalseAnswer: action.payload})
+    case(RESET_FORM):
+    return({...state, state: state})
     default: return state
   }
 }

@@ -5,7 +5,9 @@ import {
   SET_QUIZ_INTO_STATE,
   SET_SELECTED_ANSWER,
   SET_INFO_MESSAGE,
-  INPUT_CHANGE,
+  INPUT_Q_CHANGE,
+  INPUT_T_CHANGE,
+  INPUT_F_CHANGE,
   RESET_FORM
 } from './action-types'
 import axios from 'axios';
@@ -30,9 +32,17 @@ export function setQuiz(quiz) {
   return({type: SET_QUIZ_INTO_STATE, payload: quiz})
  }
 
-export function inputChange(change, ques, tru, fal) {
-  return({type: INPUT_CHANGE, payload: change})
+export function inputQChange(change) {
+  return({type: INPUT_Q_CHANGE, payload: change})
  }
+
+ export function inputTChange(change){
+  return ({type: INPUT_T_CHANGE, payload: change})
+ }
+
+export function inputFChange(change){
+  return ({type: INPUT_F_CHANGE, payload: change})
+}
 
 export function resetForm() {
   return({type: RESET_FORM})
@@ -40,7 +50,6 @@ export function resetForm() {
 
 // ❗ Async action creators
 export function fetchQuiz() {
-  
   return function (dispatch) {
     // First, dispatch an action to reset the quiz state (so the "Loading next quiz..." message can display)
     dispatch(setQuiz(null))
@@ -51,7 +60,6 @@ export function fetchQuiz() {
         .catch(err => {console.log(err)})
     // On successful GET:
     // - Dispatch an action to send the obtained quiz to its state
-
   }
 }
 export function postAnswer(quiz_id, answer_id) {
@@ -75,12 +83,13 @@ export function postQuiz(question_text, true_answer_text, false_answer_text) {
   return function (dispatch) {
     // On successful POST:
       axios.post('http://localhost:9000/api/quiz/new', {question_text, true_answer_text, false_answer_text})
-            .then(res => {console.log(res)
+        .then(res => {console.log(res)
+            // - Dispatch the correct message to the the appropriate state
             
+            // - Dispatch the resetting of the form
+            dispatch(resetForm())
             })
-    // - Dispatch the correct message to the the appropriate state
-            .catch((res) => {dispatch(setMessage(res.response.data.message))})
-    // - Dispatch the resetting of the form
+    // ❗ On promise rejections, use log statements or breakpoints, and put an appropriate error message in state
+          .catch((res) => {dispatch(setMessage(res.response.data.message))})
   }         
 }
-// ❗ On promise rejections, use log statements or breakpoints, and put an appropriate error message in state
